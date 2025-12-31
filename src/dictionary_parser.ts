@@ -97,10 +97,8 @@ export async function parseFromFileList(files: FileList): Promise<ParsedDictiona
       aiDicImageFile = file;
     } else if (path === "/AiDicHeadWord") {
       aiDicHeadWordFile = file;
-    } else if (path.startsWith("/mImg/")) {
-      if (path.endsWith(".zip")) {
-        zipFiles[fileNameWithoutExtension(file.name)] = file;
-      }
+    } else if (path.startsWith("/mImg/") && path.endsWith(".zip")) {
+      zipFiles[fileNameWithoutExtension(file.name)] = file;
     }
   }
 
