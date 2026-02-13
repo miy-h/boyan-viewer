@@ -1,67 +1,51 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
-import { getDocument, GlobalWorkerOptions, type RenderTask } from "pdfjs-dist";
-import pdfWorker from "pdfjs-dist/build/pdf.worker.mjs?url";
-
-GlobalWorkerOptions.workerSrc = pdfWorker;
+import { PdfErrorCode, type PdfEngine, type PdfTask } from "@embedpdf/models";
+import { ref, watch, onMounted, nextTick } from "vue";
 
 const props = defineProps<{
-  data: Uint8Array;
+  engine: PdfEngine;
+  data: Uint8Array<ArrayBuffer>;
 }>();
 
-const canvasRef = ref<HTMLCanvasElement | null>(null);
+const imageUrl = ref("");
+let currentRenderingTask: PdfTask<Blob, unknown> | null = null;
 
-let currentLoadingTask: { promise: Promise<any>; destroy: () => Promise<void> } | null = null;
-let currentRenderTask: RenderTask | null = null;
-
-const render = async () => {
-  const canvas = canvasRef.value;
-  if (!canvas) return;
-
-  if (currentRenderTask) {
-    currentRenderTask.cancel();
-    currentRenderTask = null;
-  }
-
-  if (currentLoadingTask) {
-    await currentLoadingTask.destroy();
-    currentLoadingTask = null;
-  }
-
-  const loadingTask = getDocument({ data: props.data });
-  currentLoadingTask = loadingTask;
-
+const render = async (data: Uint8Array<ArrayBuffer>) => {
+  const engine = props.engine;
+  let document;
   try {
-    const pdf = await loadingTask.promise;
-    const page = await pdf.getPage(1);
-
-    const scale = 1.5;
-    const viewport = page.getViewport({ scale });
-
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-
-    const context = canvas.getContext("2d");
-    if (context) {
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-        canvas,
-      };
-      currentRenderTask = page.render(renderContext);
-      await currentRenderTask.promise;
+    if (currentRenderingTask) {
+      currentRenderingTask.abort({ message: "cancelled", code: PdfErrorCode.Cancelled });
+      currentRenderingTask = null;
     }
-  } catch (e: any) {
-    if (e.name !== "RenderingCancelledException") {
-      console.error(e);
+    document = await engine
+      .openDocumentBuffer({ id: Math.random().toString(), content: data.buffer })
+      .toPromise();
+    const page = document.pages[0];
+    if (!page) {
+      imageUrl.value = "";
+      return;
+    }
+    currentRenderingTask = engine.renderPage(document, page, { scaleFactor: 1.5 });
+    const imageBlob = await currentRenderingTask.toPromise();
+    currentRenderingTask = null;
+    const imageBlobUrl = URL.createObjectURL(imageBlob);
+    imageUrl.value = imageBlobUrl;
+    await nextTick();
+    URL.revokeObjectURL(imageBlobUrl);
+  } finally {
+    if (document) {
+      await engine.closeDocument(document).toPromise();
     }
   }
 };
 
 watch(() => props.data, render);
-onMounted(render);
+onMounted(() => {
+  render(props.data);
+});
 </script>
 
 <template>
-  <canvas ref="canvasRef"></canvas>
+  <img :src="imageUrl" />
 </template>

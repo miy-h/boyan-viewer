@@ -10,9 +10,10 @@
     "lint": "prettier . --check --experimental-cli"
   },
   "dependencies": {
+    "@embedpdf/engines": "^2.6.0",
+    "@embedpdf/models": "^2.6.0",
     "@vueuse/core": "^14.2.1",
     "@zip.js/zip.js": "^2.8.20",
-    "pdfjs-dist": "^5.4.624",
     "vue": "^3.5.28"
   },
   "devDependencies": {
