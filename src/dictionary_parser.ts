@@ -1,5 +1,16 @@
-export function fileNameWithoutExtension(fileName: string) {
-  return fileName.replace(/(.+)\.[^.]+/, (_, $1) => $1);
+import { BlobReader, Uint8ArrayWriter, ZipReader, type Entry } from "@zip.js/zip.js";
+import { promiseAllKeyed } from "./utils";
+
+function baseName(path: string) {
+  return path.split("/").at(-1) ?? "";
+}
+
+export function fileNameWithoutExtension(path: string) {
+  return baseName(path).replace(/(.+)\.[^.]+/, (_, $1) => $1);
+}
+
+export function extension(fileName: string) {
+  return fileName.split(".").at(-1) ?? "";
 }
 
 function trimRootDirectory(path: string) {
@@ -79,13 +90,13 @@ export function parseAiDicHeadWord(
 export interface ParsedDictionary {
   guideWords: GuideWord[];
   imagePageCounts: Record<string, number>;
-  imageZipFiles: Record<string, File>;
+  zipEntriesOfEachFile: Record<string, Entry[]>;
 }
 
 export async function parseFromFileList(files: FileList): Promise<ParsedDictionary> {
   let aiDicImageFile: File | undefined;
   let aiDicHeadWordFile: File | undefined;
-  const zipFiles: Record<string, File> = Object.create(null);
+  const zipEntriesPromise: Record<string, Promise<Entry[]>> = Object.create(null);
 
   for (const file of Array.from(files)) {
     // This is not a standard property, so we need to cast to any
@@ -98,7 +109,9 @@ export async function parseFromFileList(files: FileList): Promise<ParsedDictiona
     } else if (path === "/AiDicHeadWord") {
       aiDicHeadWordFile = file;
     } else if (path.startsWith("/mImg/") && path.endsWith(".zip")) {
-      zipFiles[fileNameWithoutExtension(file.name)] = file;
+      zipEntriesPromise[fileNameWithoutExtension(file.name)] = new ZipReader(
+        new BlobReader(file),
+      ).getEntries();
     }
   }
 
@@ -118,6 +131,44 @@ export async function parseFromFileList(files: FileList): Promise<ParsedDictiona
   return {
     guideWords,
     imagePageCounts: pageCounts,
-    imageZipFiles: zipFiles,
+    zipEntriesOfEachFile: await promiseAllKeyed(zipEntriesPromise),
+  };
+}
+
+function mimeTypeFromExtension(extension: string) {
+  if (extension === "tif" || extension === "tiff") {
+    return "image/tiff";
+  }
+  if (extension === "pdf") {
+    return "application/pdf";
+  }
+  throw new Error(`Unknown extension: ${extension}`);
+}
+
+export async function extractImageFile(
+  zipEntries: Record<string, Entry[]>,
+  fileName: string,
+  pageNumber: number,
+) {
+  const supportedExtensions = ["tif", "tiff", "pdf"];
+  const entries = zipEntries[fileName];
+  if (entries === undefined) {
+    throw new Error(`Unknown file name: ${fileName}`);
+  }
+  const files = entries.filter((entry) => !entry.directory);
+  const entry = files.find((entry) => {
+    const entryFileName = trimRootDirectory(entry.filename);
+    return (
+      parseInt(fileNameWithoutExtension(entryFileName), 10) === pageNumber &&
+      supportedExtensions.includes(extension(entryFileName))
+    );
+  });
+  if (entry === undefined) {
+    throw new Error(`file name ${fileName} doesn't have page ${pageNumber}`);
+  }
+  const data = await entry.getData(new Uint8ArrayWriter());
+  return {
+    type: mimeTypeFromExtension(extension(entry.filename)),
+    data,
   };
 }

@@ -1,24 +1,39 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { ParsedDictionary } from "../dictionary_parser";
+import { extractImageFile, type ParsedDictionary } from "../dictionary_parser";
+import { computedAsync, refDebounced } from "@vueuse/core";
+import PdfRenderer from "./PdfRenderer.vue";
 
 interface Props {
   dic: ParsedDictionary;
 }
-const { dic } = defineProps<Props>();
+const props = defineProps<Props>();
 
 const searchWord = ref("");
-const page = computed(() => {
-  console.log(dic.guideWords);
-  const index = dic.guideWords.findIndex(
-    (entry) => entry.word !== "" && entry.word.toLowerCase() >= searchWord.value.toLowerCase(),
+const debouncedSearchWord = refDebounced(searchWord, 100);
+
+const matchedGuideWord = computed(() => {
+  const index = props.dic.guideWords.findIndex(
+    (entry) =>
+      entry.word !== "" && entry.word.toLowerCase() >= debouncedSearchWord.value.toLowerCase(),
   );
-  return dic.guideWords.at(index >= 0 ? Math.max(0, index - 1) : -1)!;
+  return props.dic.guideWords.at(index >= 0 ? Math.max(0, index - 1) : -1)!;
 });
+
+const image = computedAsync(() =>
+  extractImageFile(
+    props.dic.zipEntriesOfEachFile,
+    matchedGuideWord.value.fileName,
+    matchedGuideWord.value.pageNumber,
+  ),
+);
 </script>
 
 <template>
-  <div>total page count: {{ dic.guideWords.length }}</div>
+  <div>total page count: {{ props.dic.guideWords.length }}</div>
   <input type="text" v-model="searchWord" />
-  <div>{{ JSON.stringify(page) }}</div>
+  <div v-if="image">
+    <PdfRenderer v-if="image.type === 'application/pdf'" :data="image.data" />
+    <div v-else>Image type: {{ image.type }}</div>
+  </div>
 </template>
