@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PdfErrorCode, type PdfEngine, type PdfTask } from "@embedpdf/models";
+import { PdfErrorCode, TaskAbortedError, type PdfEngine, type PdfTask } from "@embedpdf/models";
 import { ref, watch, onMounted, nextTick } from "vue";
 
 const props = defineProps<{
@@ -33,6 +33,10 @@ const render = async (data: Uint8Array<ArrayBuffer>) => {
     imageUrl.value = imageBlobUrl;
     await nextTick();
     URL.revokeObjectURL(imageBlobUrl);
+  } catch (e) {
+    if (!(e instanceof TaskAbortedError) || e.reason.code !== PdfErrorCode.Cancelled) {
+      throw e;
+    }
   } finally {
     if (document) {
       await engine.closeDocument(document).toPromise();
