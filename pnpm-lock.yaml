@@ -13,7 +13,7 @@ importers:
     dependencies:
       '@embedpdf/engines':
         specifier: ^2.6.0
-        version: 2.6.0(preact@10.28.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.50.3)(vue@3.5.28(typescript@5.9.3))
+        version: 2.6.0(preact@10.28.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.51.1)(vue@3.5.28(typescript@5.9.3))
       '@embedpdf/models':
         specifier: ^2.6.0
         version: 2.6.0
@@ -23,6 +23,9 @@ importers:
       '@zip.js/zip.js':
         specifier: ^2.8.20
         version: 2.8.20
+      utif2:
+        specifier: ^4.1.0
+        version: 4.1.0
       vue:
         specifier: ^3.5.28
         version: 3.5.28(typescript@5.9.3)
@@ -260,6 +263,9 @@ packages:
 
   '@types/node@25.2.3':
     resolution: {integrity: sha512-m0jEgYlYz+mDJZ2+F4v8D1AyQb+QzsNqRuI7xg1VQX/KlKS0qT9r1Mo16yo5F/MtifXFgaofIFsdFMox2SxIbQ==}
+
+  '@types/trusted-types@2.0.7':
+    resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
   '@types/web-bluetooth@0.0.21':
     resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
@@ -541,6 +547,9 @@ packages:
   obug@2.1.1:
     resolution: {integrity: sha512-uTqF9MuPraAQ+IsnPf366RG4cP9RtUi7MLO1N3KEc+wb0a6yKpeL0lmk2IB1jY5KHPAlTc6T/JRdC/YqxHNwkQ==}
 
+  pako@1.0.11:
+    resolution: {integrity: sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==}
+
   path-browserify@1.0.1:
     resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
 
@@ -596,8 +605,8 @@ packages:
   std-env@3.10.0:
     resolution: {integrity: sha512-5GS12FdOZNliM5mAOxFRg7Ir0pWz8MdpYm6AY6VPkGpbA7ZzmbzNcBJQ0GPvvyWgcY7QAhCgf9Uy89I03faLkg==}
 
-  svelte@5.50.3:
-    resolution: {integrity: sha512-5JCO8P/cFlwyfi1LeZ9uppMZvuaHWygyZmqxyKOIqbV3PoHKaddvV1C6njL/InpDXplNYZnAVEbn8mLslycBxQ==}
+  svelte@5.51.1:
+    resolution: {integrity: sha512-r8r6p+NFC2ckAkxW4lqpGs1AZWBi5Y+TbJMmAglqSbokN5UWkDsKKkybfGBKXd8yYMri7KJ2L78fO9SO+NOelA==}
     engines: {node: '>=18'}
 
   tinybench@2.9.0:
@@ -625,6 +634,9 @@ packages:
 
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
+
+  utif2@4.1.0:
+    resolution: {integrity: sha512-+oknB9FHrJ7oW7A2WZYajOcv4FcDR4CfoGB0dPNfxbi4GO05RRnFmt5oa23+9w32EanrYcSJWspUiJkLMs+37w==}
 
   vite@8.0.0-beta.14:
     resolution: {integrity: sha512-oLW66oi8tZcoxu6+1HFXb+5hLHco3OnEVu2Awmj5NqEo7vxaqybjBM0BXHcq+jAFhzkMGXJl8xcO5qDBczgKLg==}
@@ -743,7 +755,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@embedpdf/engines@2.6.0(preact@10.28.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.50.3)(vue@3.5.28(typescript@5.9.3))':
+  '@embedpdf/engines@2.6.0(preact@10.28.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(svelte@5.51.1)(vue@3.5.28(typescript@5.9.3))':
     dependencies:
       '@embedpdf/fonts-arabic': 1.0.0
       '@embedpdf/fonts-hebrew': 1.0.0
@@ -757,7 +769,7 @@ snapshots:
       preact: 10.28.3
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
-      svelte: 5.50.3
+      svelte: 5.51.1
       vue: 3.5.28(typescript@5.9.3)
 
   '@embedpdf/fonts-arabic@1.0.0': {}
@@ -894,6 +906,8 @@ snapshots:
   '@types/node@25.2.3':
     dependencies:
       undici-types: 7.16.0
+
+  '@types/trusted-types@2.0.7': {}
 
   '@types/web-bluetooth@0.0.21': {}
 
@@ -1150,6 +1164,8 @@ snapshots:
 
   obug@2.1.1: {}
 
+  pako@1.0.11: {}
+
   path-browserify@1.0.1: {}
 
   pathe@2.0.3: {}
@@ -1204,12 +1220,13 @@ snapshots:
 
   std-env@3.10.0: {}
 
-  svelte@5.50.3:
+  svelte@5.51.1:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.5.5
       '@sveltejs/acorn-typescript': 1.0.9(acorn@8.15.0)
       '@types/estree': 1.0.8
+      '@types/trusted-types': 2.0.7
       acorn: 8.15.0
       aria-query: 5.3.2
       axobject-query: 4.1.0
@@ -1239,6 +1256,10 @@ snapshots:
   typescript@5.9.3: {}
 
   undici-types@7.16.0: {}
+
+  utif2@4.1.0:
+    dependencies:
+      pako: 1.0.11
 
   vite@8.0.0-beta.14(@types/node@25.2.3):
     dependencies:
