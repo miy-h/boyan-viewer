@@ -14,6 +14,7 @@
     "@embedpdf/models": "^2.13.0",
     "@vueuse/core": "^14.2.1",
     "@zip.js/zip.js": "^2.8.26",
+    "comlink": "^4.4.2",
     "utif2": "^4.1.0",
     "vue": "^3.5.32"
   },
