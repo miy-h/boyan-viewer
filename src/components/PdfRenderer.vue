@@ -1,24 +1,29 @@
 <script setup lang="ts">
-import { PdfErrorCode, TaskAbortedError, type PdfEngine, type PdfTask } from "@embedpdf/models";
+import { usePdfiumEngine } from "@embedpdf/engines/vue";
+import { PdfErrorCode, TaskAbortedError, type PdfTask } from "@embedpdf/models";
 import { ref, watch, onMounted, nextTick } from "vue";
 
 const props = defineProps<{
-  engine: PdfEngine;
   data: Uint8Array<ArrayBuffer>;
 }>();
+
+const { engine } = usePdfiumEngine();
 
 const imageUrl = ref("");
 let currentRenderingTask: PdfTask<Blob, unknown> | null = null;
 
 const render = async (data: Uint8Array<ArrayBuffer>) => {
-  const engine = props.engine;
+  const engineInstance = engine.value;
+  if (!engineInstance) {
+    return;
+  }
   let document;
   try {
     if (currentRenderingTask) {
       currentRenderingTask.abort({ message: "cancelled", code: PdfErrorCode.Cancelled });
       currentRenderingTask = null;
     }
-    document = await engine
+    document = await engineInstance
       .openDocumentBuffer({ id: Math.random().toString(), content: data.buffer })
       .toPromise();
     const page = document.pages[0];
@@ -26,7 +31,7 @@ const render = async (data: Uint8Array<ArrayBuffer>) => {
       imageUrl.value = "";
       return;
     }
-    currentRenderingTask = engine.renderPage(document, page, { scaleFactor: 1.5 });
+    currentRenderingTask = engineInstance.renderPage(document, page, { scaleFactor: 1.5 });
     const imageBlob = await currentRenderingTask.toPromise();
     currentRenderingTask = null;
     const imageBlobUrl = URL.createObjectURL(imageBlob);
@@ -39,12 +44,15 @@ const render = async (data: Uint8Array<ArrayBuffer>) => {
     }
   } finally {
     if (document) {
-      await engine.closeDocument(document).toPromise();
+      await engineInstance.closeDocument(document).toPromise();
     }
   }
 };
 
-watch(() => props.data, render);
+watch([() => props.data, engine], () => {
+  render(props.data);
+});
+
 onMounted(() => {
   render(props.data);
 });
