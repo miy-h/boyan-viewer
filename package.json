@@ -10,29 +10,24 @@
     "lint": "prettier . --check --experimental-cli"
   },
   "dependencies": {
-    "@embedpdf/engines": "^2.6.0",
-    "@embedpdf/models": "^2.6.0",
+    "@embedpdf/engines": "^2.13.0",
+    "@embedpdf/models": "^2.13.0",
     "@vueuse/core": "^14.2.1",
-    "@zip.js/zip.js": "^2.8.20",
+    "@zip.js/zip.js": "^2.8.26",
     "utif2": "^4.1.0",
-    "vue": "^3.5.28"
+    "vue": "^3.5.32"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
-    "@types/node": "^25.2.3",
-    "@types/web": "^0.0.333",
-    "@vitejs/plugin-vue": "^6.0.4",
-    "@vue/tsconfig": "^0.8.1",
+    "@types/node": "^25.5.2",
+    "@types/web": "^0.0.345",
+    "@vitejs/plugin-vue": "^6.0.5",
+    "@vue/tsconfig": "^0.9.1",
     "prettier": "^3.8.1",
-    "typescript": "5.9.3",
-    "vite": "8.0.0-beta.14",
-    "vitest": "^4.0.18",
-    "vue-tsc": "^3.2.4"
+    "typescript": "6.0.2",
+    "vite": "^8.0.3",
+    "vitest": "^4.1.2",
+    "vue-tsc": "^3.2.6"
   },
-  "packageManager": "pnpm@10.33.0",
-  "pnpm": {
-    "overrides": {
-      "vite": "8.0.0-beta.14"
-    }
-  }
+  "packageManager": "pnpm@10.33.0"
 }
