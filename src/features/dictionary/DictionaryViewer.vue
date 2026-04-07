@@ -17,6 +17,7 @@ const debouncedSearchWord = refDebounced(searchWord, 100);
 const {
   currentFileName,
   currentPageNumber,
+  maxPageNumberForCurrentFile,
   moveToWord,
   hasPreviousPage,
   hasNextPage,
@@ -34,10 +35,32 @@ const image = computedAsync(() =>
 </script>
 
 <template>
-  <input type="text" v-model="searchWord" />
-  <button type="button" :disabled="!hasPreviousPage" @click="moveToPreviousPage">prev</button>
-  <button type="button" :disabled="!hasNextPage" @click="moveToNextPage">next</button>
-  <div>page: {{ currentPageNumber }}</div>
+  <input type="text" placeholder="search word" v-model="searchWord" />
+  <div>
+    <label>
+      volume (file name):
+      <select v-model="currentFileName">
+        <option
+          v-for="fileName in props.dic.volumes.map((volume) => volume.fileName)"
+          :value="fileName"
+        >
+          {{ fileName }}
+        </option>
+      </select>
+    </label>
+  </div>
+  <div>
+    page:
+    <input
+      type="number"
+      v-model.number="currentPageNumber"
+      :max="maxPageNumberForCurrentFile"
+      min="1"
+    />
+    / {{ maxPageNumberForCurrentFile }}
+    <button type="button" :disabled="!hasPreviousPage" @click="moveToPreviousPage">prev</button>
+    <button type="button" :disabled="!hasNextPage" @click="moveToNextPage">next</button>
+  </div>
   <div v-if="image">
     <PdfRenderer v-if="image.type === 'application/pdf'" :data="image.data" />
     <TiffRenderer v-if="image.type === 'image/tiff'" :data="image.data" />
