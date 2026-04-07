@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  fileNameWithoutExtension,
-  parseAiDicHeadWord,
-  parseAiDicImageFile,
-} from "./dictionary_parser";
+import { fileNameWithoutExtension, parseAiDicHeadWord, parseAiDicImageFile } from "./parser";
 
 describe("fileNameWithoutExtension", () => {
   it("should work", () => {

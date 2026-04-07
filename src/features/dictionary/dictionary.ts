@@ -1,4 +1,4 @@
-import type { GuideWord, ParsedDictionary } from "./dictionary_parser";
+import type { GuideWord, ParsedDictionary } from "./parser";
 
 export function searchPageFromDictionary(dic: ParsedDictionary, word: string): GuideWord {
   const guideWords = ([] as GuideWord[]).concat(...dic.volumes.map((volume) => volume.guideWords));

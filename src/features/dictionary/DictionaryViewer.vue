@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computedAsync, refDebounced } from "@vueuse/core";
 import { computed, ref } from "vue";
-import { extractImageFile, type ParsedDictionary } from "../dictionary_parser";
-import PdfRenderer from "./PdfRenderer.vue";
-import TiffRenderer from "./TiffRenderer.vue";
-import { searchPageFromDictionary } from "../dictionary";
+import { extractImageFile, type ParsedDictionary } from "./parser";
+import PdfRenderer from "../imageRenderer/PdfRenderer.vue";
+import TiffRenderer from "../imageRenderer/TiffRenderer.vue";
+import { searchPageFromDictionary } from "./dictionary";
 
 interface Props {
   dic: ParsedDictionary;
