@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computedAsync, refDebounced } from "@vueuse/core";
-import { computed, ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { extractImageFile, type ParsedDictionary } from "./parser";
 import PdfRenderer from "../imageRenderer/PdfRenderer.vue";
 import TiffRenderer from "../imageRenderer/TiffRenderer.vue";
-import { searchPageFromDictionary } from "./dictionary";
+import { useCurrentPage } from "./useCurrentPage";
 
 interface Props {
   dic: ParsedDictionary;
@@ -14,21 +14,30 @@ const props = defineProps<Props>();
 const searchWord = ref("");
 const debouncedSearchWord = refDebounced(searchWord, 100);
 
-const matchedGuideWord = computed(() =>
-  searchPageFromDictionary(props.dic, debouncedSearchWord.value),
-);
+const {
+  currentFileName,
+  currentPageNumber,
+  moveToWord,
+  hasPreviousPage,
+  hasNextPage,
+  moveToPreviousPage,
+  moveToNextPage,
+} = useCurrentPage(props.dic);
+
+watchEffect(() => {
+  moveToWord(debouncedSearchWord.value);
+});
 
 const image = computedAsync(() =>
-  extractImageFile(
-    props.dic.zipEntriesOfEachFile,
-    matchedGuideWord.value.fileName,
-    matchedGuideWord.value.pageNumber,
-  ),
+  extractImageFile(props.dic.zipEntriesOfEachFile, currentFileName.value, currentPageNumber.value),
 );
 </script>
 
 <template>
   <input type="text" v-model="searchWord" />
+  <button type="button" :disabled="!hasPreviousPage" @click="moveToPreviousPage">prev</button>
+  <button type="button" :disabled="!hasNextPage" @click="moveToNextPage">next</button>
+  <div>page: {{ currentPageNumber }}</div>
   <div v-if="image">
     <PdfRenderer v-if="image.type === 'application/pdf'" :data="image.data" />
     <TiffRenderer v-if="image.type === 'image/tiff'" :data="image.data" />
