@@ -42,7 +42,7 @@ export function parseAiDicImageFile(input: string): Record<string, number> {
   return pageCounts;
 }
 
-interface GuideWord {
+export interface GuideWord {
   word: string;
   fileName: string;
   /** 1-indexed */
@@ -87,9 +87,13 @@ export function parseAiDicHeadWord(
   return guideWords;
 }
 
-export interface ParsedDictionary {
+interface Volume {
+  fileName: string;
   guideWords: GuideWord[];
-  imagePageCounts: Record<string, number>;
+}
+
+export interface ParsedDictionary {
+  volumes: Volume[];
   zipEntriesOfEachFile: Record<string, Entry[]>;
 }
 
@@ -128,11 +132,18 @@ export async function parseFromFileList(files: FileList): Promise<ParsedDictiona
   const aiDicHeadWordContent = await aiDicHeadWordFile.text();
   const guideWords = parseAiDicHeadWord(aiDicHeadWordContent, pageCounts);
 
-  return {
-    guideWords,
-    imagePageCounts: pageCounts,
+  const volumes = Map.groupBy(guideWords, (word) => word.fileName)
+    .entries()
+    .map(([fileName, guideWords]) => ({
+      fileName,
+      guideWords,
+    }))
+    .toArray();
+
+  return Object.freeze({
+    volumes,
     zipEntriesOfEachFile: await promiseAllKeyed(zipEntriesPromise),
-  };
+  });
 }
 
 function mimeTypeFromExtension(extension: string) {
