@@ -2,6 +2,7 @@ import { computed, ref } from "vue";
 import type { ParsedDictionary } from "./parser";
 import { searchPageFromDictionary } from "./dictionary";
 import { clamp } from "../../utils";
+import type { CollatorFunction } from "./collator";
 
 export function useCurrentPage(dic: ParsedDictionary) {
   const currentState = ref({
@@ -45,8 +46,8 @@ export function useCurrentPage(dic: ParsedDictionary) {
     moveToNextPage: () => {
       setPageNumber(currentState.value.pageNumber + 1);
     },
-    moveToWord: (word: string) => {
-      const page = searchPageFromDictionary(dic, word);
+    moveToWord: (word: string, collator: CollatorFunction) => {
+      const page = searchPageFromDictionary(dic, word, collator);
       currentState.value = {
         fileName: page.fileName,
         pageNumber: page.pageNumber,

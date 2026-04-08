@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computedAsync, refDebounced } from "@vueuse/core";
-import { ref, watchEffect } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { extractImageFile, type ParsedDictionary } from "./parser";
 import PdfRenderer from "../imageRenderer/PdfRenderer.vue";
 import TiffRenderer from "../imageRenderer/TiffRenderer.vue";
 import { useCurrentPage } from "./useCurrentPage";
+import { createCollatorForModernLocales, supportedLocales } from "./collator";
+import { getLanguageName } from "./displayNames";
 
 interface Props {
   dic: ParsedDictionary;
@@ -13,6 +15,9 @@ const props = defineProps<Props>();
 
 const searchWord = ref("");
 const debouncedSearchWord = refDebounced(searchWord, 100);
+
+const localeForDictionary = ref(supportedLocales[0]!);
+const collator = computed(() => createCollatorForModernLocales(localeForDictionary.value));
 
 const {
   currentFileName,
@@ -26,7 +31,7 @@ const {
 } = useCurrentPage(props.dic);
 
 watchEffect(() => {
-  moveToWord(debouncedSearchWord.value);
+  moveToWord(debouncedSearchWord.value, collator.value);
 });
 
 const image = computedAsync(() =>
@@ -36,6 +41,16 @@ const image = computedAsync(() =>
 
 <template>
   <input type="text" placeholder="search word" v-model="searchWord" />
+  <div>
+    <label>
+      language of dictionary:
+      <select v-model="localeForDictionary">
+        <option v-for="locale in supportedLocales" :value="locale">
+          {{ getLanguageName(locale) }}
+        </option>
+      </select>
+    </label>
+  </div>
   <div>
     <label>
       volume (file name):
