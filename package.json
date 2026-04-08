@@ -10,8 +10,8 @@
     "lint": "prettier . --check --experimental-cli"
   },
   "dependencies": {
-    "@embedpdf/engines": "^2.13.0",
-    "@embedpdf/models": "^2.13.0",
+    "@embedpdf/engines": "^2.14.0",
+    "@embedpdf/models": "^2.14.0",
     "@vueuse/core": "^14.2.1",
     "@zip.js/zip.js": "^2.8.26",
     "comlink": "^4.4.2",
@@ -26,7 +26,7 @@
     "@vue/tsconfig": "^0.9.1",
     "prettier": "^3.8.1",
     "typescript": "6.0.2",
-    "vite": "^8.0.3",
+    "vite": "^8.0.5",
     "vitest": "^4.1.2",
     "vue-tsc": "^3.2.6"
   },
