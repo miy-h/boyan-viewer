@@ -10,25 +10,25 @@
     "lint": "prettier . --check --experimental-cli"
   },
   "dependencies": {
-    "@embedpdf/engines": "^2.14.2",
-    "@embedpdf/models": "^2.14.2",
-    "@vueuse/core": "^14.2.1",
+    "@embedpdf/engines": "^2.14.4",
+    "@embedpdf/models": "^2.14.4",
+    "@vueuse/core": "^14.3.0",
     "@zip.js/zip.js": "^2.8.26",
     "comlink": "^4.4.2",
     "utif2": "^4.1.0",
-    "vue": "^3.5.33"
+    "vue": "^3.5.38"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
-    "@types/node": "^25.6.0",
-    "@types/web": "^0.0.348",
-    "@vitejs/plugin-vue": "^6.0.6",
+    "@types/node": "^25.9.3",
+    "@types/web": "^0.0.350",
+    "@vitejs/plugin-vue": "^6.0.7",
     "@vue/tsconfig": "^0.9.1",
-    "prettier": "^3.8.3",
+    "prettier": "^3.8.4",
     "typescript": "6.0.3",
-    "vite": "^8.0.10",
-    "vitest": "^4.1.5",
-    "vue-tsc": "^3.2.7"
+    "vite": "^8.0.16",
+    "vitest": "^4.1.9",
+    "vue-tsc": "^3.3.5"
   },
-  "packageManager": "pnpm@11.0.3"
+  "packageManager": "pnpm@11.7.0"
 }
