@@ -17,11 +17,7 @@ const renderTiff = async (data: Uint8Array<ArrayBuffer>): Promise<string> => {
     throw new Error("Could not get 2d context for OffscreenCanvas");
   }
 
-  const imageData = new ImageData(
-    new Uint8ClampedArray(rgba.buffer),
-    ifd.width,
-    ifd.height,
-  );
+  const imageData = new ImageData(new Uint8ClampedArray(rgba.buffer), ifd.width, ifd.height);
   ctx.putImageData(imageData, 0, 0);
 
   const blob = await canvas.convertToBlob();
