@@ -2,11 +2,11 @@
 import { computedAsync, refDebounced } from "@vueuse/core";
 import { computed, ref, watchEffect } from "vue";
 import { extractImageFile, type ParsedDictionary } from "./parser";
-import PdfRenderer from "../imageRenderer/PdfRenderer.vue";
-import TiffRenderer from "../imageRenderer/TiffRenderer.vue";
+import PdfRenderer from "../../imageRenderer/SinglePagePdfRenderer.vue";
+import TiffRenderer from "../../imageRenderer/TiffRenderer.vue";
 import { useCurrentPage } from "./useCurrentPage";
-import { createCollatorForModernLocales, supportedLocales } from "./collator";
-import { getLanguageName } from "./displayNames";
+import { createCollatorForModernLocales, supportedLocales } from "../collator";
+import { getLanguageName } from "../displayNames";
 
 interface Props {
   dic: ParsedDictionary;

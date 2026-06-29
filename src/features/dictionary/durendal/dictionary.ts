@@ -1,4 +1,4 @@
-import type { CollatorFunction } from "./collator";
+import type { CollatorFunction } from "../collator";
 import type { GuideWord, ParsedDictionary } from "./parser";
 
 export function searchPageFromDictionary(
