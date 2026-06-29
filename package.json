@@ -16,6 +16,7 @@
     "@zip.js/zip.js": "^2.8.26",
     "comlink": "^4.4.2",
     "utif2": "^4.1.0",
+    "valibot": "^1.4.1",
     "vue": "^3.5.39"
   },
   "devDependencies": {
