@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computedAsync, refDebounced } from "@vueuse/core";
 import { computed, ref, watchEffect } from "vue";
-import { extractImageFile, type ParsedDictionary } from "./parser";
+
 import PdfRenderer from "../../imageRenderer/SinglePagePdfRenderer.vue";
 import TiffRenderer from "../../imageRenderer/TiffRenderer.vue";
-import { useCurrentPage } from "./useCurrentPage";
 import { createCollatorForModernLocales, supportedLocales } from "../collator";
 import { getLanguageName } from "../displayNames";
+import { extractImageFile, type ParsedDictionary } from "./parser";
+import { useCurrentPage } from "./useCurrentPage";
 
 interface Props {
   dic: ParsedDictionary;

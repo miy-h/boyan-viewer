@@ -1,8 +1,9 @@
 import { computed, ref } from "vue";
-import type { ParsedDictionary } from "./parser";
-import { searchPageFromDictionary } from "./dictionary";
+
 import { clamp } from "../../../utils";
 import type { CollatorFunction } from "../collator";
+import { searchPageFromDictionary } from "./dictionary";
+import type { ParsedDictionary } from "./parser";
 
 export function useCurrentPage(dic: ParsedDictionary) {
   const currentState = ref({

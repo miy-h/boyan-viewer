@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as Comlink from "comlink";
 import { watch, onMounted, ref, nextTick, onBeforeUnmount } from "vue";
+
 import TiffWorker from "./tiffWorker?worker";
 
 const props = defineProps<{

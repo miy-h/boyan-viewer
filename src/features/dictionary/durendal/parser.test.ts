@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+
 import { fileNameWithoutExtension, parseAiDicHeadWord, parseAiDicImageFile } from "./parser";
 
 describe("fileNameWithoutExtension", () => {

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computedAsync, useFileDialog } from "@vueuse/core";
-import { parseFromFileList } from "./features/dictionary/durendal/parser.ts";
+
 import DictionaryViewer from "./features/dictionary/durendal/DictionaryViewer.vue";
+import { parseFromFileList } from "./features/dictionary/durendal/parser.ts";
 
 const { files, open } = useFileDialog({ directory: true });
 const dic = computedAsync(() => (files.value ? parseFromFileList(files.value) : undefined));
