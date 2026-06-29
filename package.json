@@ -7,7 +7,7 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "lint": "prettier . --check --experimental-cli"
+    "lint": "oxfmt . --check"
   },
   "dependencies": {
     "@embedpdf/engines": "^2.14.4",
@@ -24,7 +24,7 @@
     "@types/web": "^0.0.350",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vue/tsconfig": "^0.9.1",
-    "prettier": "^3.9.1",
+    "oxfmt": "0.56.0",
     "typescript": "6.0.3",
     "vite": "^8.1.0",
     "vitest": "^4.1.9",
